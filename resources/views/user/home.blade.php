@@ -91,7 +91,7 @@
                 <div class="about-visual" id="aboutGLB">
                 <model-viewer
                     id="perfumeGLB"
-                    src="{{ asset('assets/models/bleu_de_chanel_perfume..glb') }}"
+                    src="{{ asset('assets/models/bleu_de_chanel_perfume.glb') }}"
                     auto-rotate
                     camera-controls
                     disable-zoom
