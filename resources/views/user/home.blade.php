@@ -1,12 +1,9 @@
 @extends('layouts.user')
 
-@section('title', $profilToko->nama_toko ?? 'Essence — Luxury Perfume')
+@section('title', $profilToko?->nama_toko ?? 'Essence — Luxury Perfume')
+
 
 @section('content')
-
-@php
-    $profilToko = \App\Models\ProfilToko::first();
-@endphp
 
 
 <!-- ========= HERO ========= -->
@@ -18,12 +15,13 @@
             {{-- TEXT LEFT --}}
             <div class="hero-text">
                 <h1 class="hero-title">
-                    {{ $profilToko->nama_toko ?? 'About The Brand' }}
-                </h1>
+    {{ $profilToko?->nama_toko ?? 'About The Brand' }}
+</h1>
 
-                <p class="hero-subtitle">
-                    {{ $profilToko->tagline ?? 'The Art of Scent, The Essence of Elegance' }}
-                </p>
+<p class="hero-subtitle">
+    {{ $profilToko?->tagline ?? 'The Art of Scent, The Essence of Elegance' }}
+</p>
+
 
                 <a href="{{ route('katalog') }}" class="promo-btn">
                     Lihat Katalog
@@ -108,15 +106,17 @@
             <div class="about-text">
                 <h2>About me</h2>
 
-                <p>
-                    {!! nl2br(e($profilToko->deskripsi ?? 'Essence is a modern fragrance house...')) !!}
-                </p>
+<p>
+    {!! nl2br(e($profilToko?->deskripsi ?? 'Essence is a modern fragrance house...')) !!}
+</p>
+
             </div>
         </div>
     </div>
 </section>
 
 @if($profilToko && (!$profilToko->promo_until || now()->lt($profilToko->promo_until)))
+
 <section class="promo-section">
   <div class="promo-container promo-grid">
 
@@ -210,13 +210,14 @@
 <section class="visit-store">
   <div class="visit-container visit-box">
 
-    <h2 class="visit-title">
-      {{ $store->visit_title ?? 'Visit Our Store' }}
-    </h2>
+<h2 class="visit-title">
+    {{ $profilToko?->visit_title ?? 'Visit Our Store' }}
+</h2>
 
-    <p class="visit-text">
-      {{ $store->visit_description ?? 'Belanja koleksi lengkap di Shopee dengan promo eksklusif.' }}
-    </p>
+<p class="visit-text">
+    {{ $profilToko?->visit_description ?? 'Belanja koleksi lengkap di Shopee dengan promo eksklusif.' }}
+</p>
+
 
     @if($profilToko && $profilToko->link_toko_shopee)
         <a href="{{ $profilToko->link_toko_shopee }}"
@@ -271,46 +272,46 @@
             <h4>Kontak</h4>
             <ul class="footer-contact">
 
-                @if($profilToko->alamat)
-                <li>
-                    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($profilToko->alamat) }}"
-                       target="_blank" class="contact-item">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Buka Maps</span>
-                    </a>
-                </li>
-                @endif
+@if($profilToko?->alamat)
+<li>
+    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($profilToko->alamat) }}"
+       target="_blank" class="contact-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>Buka Maps</span>
+    </a>
+</li>
+@endif
 
-                @if($profilToko->email)
-                <li>
-                    <a href="mailto:{{ $profilToko->email }}" class="contact-item">
-                        <i class="fa-solid fa-envelope"></i>
-                        <span>{{ $profilToko->email }}</span>
-                    </a>
-                </li>
-                @endif
+@if($profilToko?->email)
+<li>
+    <a href="mailto:{{ $profilToko->email }}" class="contact-item">
+        <i class="fa-solid fa-envelope"></i>
+        <span>{{ $profilToko->email }}</span>
+    </a>
+</li>
+@endif
 
-                @if($profilToko->no_hp)
-                    @php
-                        $wa = preg_replace('/[^0-9]/', '', $profilToko->no_hp);
-                        if(Str::startsWith($wa,'0')) $wa = '62'.substr($wa,1);
-                    @endphp
-                <li>
-                    <a href="https://wa.me/{{ $wa }}" target="_blank" class="contact-item">
-                        <i class="fa-solid fa-phone"></i>
-                        <span>{{ $profilToko->no_hp }}</span>
-                    </a>
-                </li>
-                @endif
+@if($profilToko?->no_hp)
+@php
+    $wa = preg_replace('/[^0-9]/', '', $profilToko->no_hp);
+    if(Str::startsWith($wa,'0')) $wa = '62'.substr($wa,1);
+@endphp
+<li>
+    <a href="https://wa.me/{{ $wa }}" target="_blank" class="contact-item">
+        <i class="fa-solid fa-phone"></i>
+        <span>{{ $profilToko->no_hp }}</span>
+    </a>
+</li>
+@endif
 
-                @if($profilToko->link_toko_shopee)
-                <li>
-                    <a href="{{ $profilToko->link_toko_shopee }}" class="contact-item shop-link" target="_blank">
-                        <i class="fa-brands fa-shopify"></i>
-                        <span>Buka Toko di Shopee</span>
-                    </a>
-                </li>
-                @endif
+@if($profilToko?->link_toko_shopee)
+<li>
+    <a href="{{ $profilToko->link_toko_shopee }}" class="contact-item shop-link" target="_blank">
+        <i class="fa-brands fa-shopify"></i>
+        <span>Buka Toko di Shopee</span>
+    </a>
+</li>
+@endif
 
             </ul>
         </div>

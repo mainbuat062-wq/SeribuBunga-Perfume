@@ -13,6 +13,11 @@ class HomeController extends Controller
 public function index()
 {
     $profilToko = ProfilToko::first();
+    
+    if (!$profilToko) {
+        $profilToko = new ProfilToko();
+        $profilToko->alamat = '-';
+    }
 
     // === HIGHLIGHT: 1 produk terbaru per label ===
     $highlight = collect([]);
