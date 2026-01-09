@@ -33,7 +33,7 @@
                 <div id="glbSlot">
                 <model-viewer
                     id="perfumeGLB"
-                     src="{{ asset('assets/models/perfume_bottle.glb') }}"
+                    src="{{ asset('assets/models/perfume_bottle.glb') }}"
                     auto-rotate
                     camera-controls
                     disable-zoom
@@ -91,7 +91,7 @@
                 <div class="about-visual" id="aboutGLB">
                 <model-viewer
                     id="perfumeGLB"
-                     src="{{ asset('assets/models/bleu_de_chanel_perfume..glb') }}"
+                    src="{{ asset('assets/models/bleu_de_chanel_perfume..glb') }}"
                     auto-rotate
                     camera-controls
                     disable-zoom
