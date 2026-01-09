@@ -281,7 +281,8 @@
                 </li>
                 @endif
 
-                @if($profilToko->email)
+                @if(!empty($profilToko) && !empty($profilToko->email))
+
                 <li>
                     <a href="mailto:{{ $profilToko->email }}" class="contact-item">
                         <i class="fa-solid fa-envelope"></i>
