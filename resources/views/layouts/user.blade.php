@@ -1,24 +1,24 @@
+@php
+    $profilToko = \App\Models\ProfilToko::first();
+@endphp
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title', $profilToko->nama_toko ?? 'Essence')</title>
+    <title>{{ $profilToko->nama_toko ?? 'Essence' }}</title>
 
     <link rel="stylesheet" href="{{ asset('assets/css/essence.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    {{-- SLOT EXTRA STYLE PER HALAMAN --}}
     @stack('styles')
 </head>
 
-<body>
 
-@php
-    $profilToko = \App\Models\ProfilToko::first();
-@endphp
+<body>
 
 
 {{-- ================= NAVBAR ================= --}}
