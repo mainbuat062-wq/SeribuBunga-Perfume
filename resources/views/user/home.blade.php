@@ -271,7 +271,7 @@
             <h4>Kontak</h4>
             <ul class="footer-contact">
 
-                @if($profilToko->alamat)
+                @if(!empty($profilToko) && !empty($profilToko->alamat))
                 <li>
                     <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($profilToko->alamat) }}"
                        target="_blank" class="contact-item">
