@@ -357,6 +357,9 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(updateCountdown, 1000);
 });
 </script>
+<script type="module"
+  src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+</script>
 
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script src="{{ asset('assets/js/essence.js') }}"></script>
