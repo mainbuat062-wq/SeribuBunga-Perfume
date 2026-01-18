@@ -55,16 +55,19 @@ window.addEventListener("scroll", () => {
     const navbar = document.querySelector(".navbar");
     if (!navbar) return;
 
-    // Scroll turun → sembunyikan
-    if (current > lastScroll && current > 120) {
-        navbar.classList.add("hide");
-        navbar.classList.remove("show");
+if (current > lastScroll && current > 120) {
+    navbar.classList.add("hide");
+    navbar.classList.remove("show");
 
-    // Scroll naik → tampilkan
-    } else {
-        navbar.classList.add("show");
-        navbar.classList.remove("hide");
-    }
+    // 🔥 AUTO CLOSE MENU SAAT NAVBAR HIDE
+    navMenu?.classList.remove("active");
+    hamburger?.classList.remove("active");
+
+} else {
+    navbar.classList.add("show");
+    navbar.classList.remove("hide");
+}
+
 
     lastScroll = current;
 });
@@ -131,13 +134,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let cards = [...track.children];
 
   const VISIBLE = 3;          // jumlah kartu tampak
-  const STEP_DELAY = 2000;    // jeda autoplay
-  const SPEED = 650;          // durasi animasi slide
+const STEP_DELAY = 2500; // berhenti 2.5 detik
+const SPEED = 650;       // animasi 0.65 detik
+
 
   let index = VISIBLE;
   let paused = false;
   let isSnapping = false;
-  let autoplayTimer = null;
+ 
 
   /* ===== CLONE DEPAN & BELAKANG (infinite loop) ===== */
   const head = cards.slice(0, VISIBLE).map(n => n.cloneNode(true));
@@ -152,11 +156,13 @@ document.addEventListener("DOMContentLoaded", () => {
   cards = [...track.children];
 
   /* ===== POSITIONING ===== */
-  function goTo(i, animated = true){
-    const x = cards[i].offsetLeft;
-    track.style.transition = animated ? `${SPEED}ms ease` : "none";
-    track.style.transform = `translateX(-${x}px)`;
-  }
+function goTo(i, animated = true){
+  if(!cards[i]) return; // 🔥 anti undefined
+  const x = cards[i].offsetLeft;
+  track.style.transition = animated ? `${SPEED}ms ease` : "none";
+  track.style.transform = `translateX(-${x}px)`;
+}
+
 
   function normalize(i){
     if(cards[i]?.dataset.clone === "head") return VISIBLE;
@@ -172,29 +178,66 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   requestAnimationFrame(init);
 
-  /* ===== AUTOPLAY ===== */
-  function startAutoplay(){
-    clearInterval(autoplayTimer);
-    autoplayTimer = setInterval(()=>{
-      if(!paused && !isSnapping){
-        index++;
-        goTo(index,true);
-      }
-    }, STEP_DELAY);
-  }
-  startAutoplay();
-
-  track.addEventListener("transitionend", ()=>{
-    if(isSnapping) return;
-
-    if(cards[index]?.dataset.clone){
-      index = normalize(index);
-      goTo(index,false);
-    }
+  window.addEventListener("load", () => {
+    goTo(index, false);
   });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      goTo(index, false);
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    goTo(index, false);
+  });
+
+
+  /* ===== AUTOPLAY ===== */
+/* ===== AUTOPLAY (PAUSE PER PRODUK) ===== */
+let autoplayTimeout = null;
+
+function scheduleNext(){
+  clearTimeout(autoplayTimeout);
+
+  autoplayTimeout = setTimeout(() => {
+    if(paused || isSnapping) return scheduleNext();
+
+    // geser ke next
+    index++;
+    goTo(index, true);
+
+    // setelah animasi selesai, normalize kalau clone
+    setTimeout(() => {
+      if(cards[index]?.dataset.clone){
+        index = normalize(index);
+        goTo(index, false);
+      }
+
+      // lanjutkan autoplay lagi (pause -> slide -> pause -> slide)
+      scheduleNext();
+
+    }, SPEED + 50);
+
+  }, STEP_DELAY); // ini durasi berhenti per produk
+}
+
+scheduleNext();
+
+track.addEventListener("transitionend", (e) => {
+  if(e.propertyName !== "transform") return;
+  if(isSnapping) return;
+
+  if(cards[index]?.dataset.clone){
+    index = normalize(index);
+    goTo(index,false);
+  }
+});
+
 
   /* ===== PAUSE & SNAP ON USER ACTION ===== */
   function pauseAndSnap(){
+    if(isSnapping) return; 
     paused = true;
     isSnapping = true;
 
@@ -209,13 +252,14 @@ document.addEventListener("DOMContentLoaded", () => {
     index = nearest;
     goTo(index,true);
 
-    setTimeout(()=>{
-      index = normalize(index);
-      goTo(index,false);
-      isSnapping = false;
-      paused = false;
-      startAutoplay();
-    }, 600);
+setTimeout(()=>{
+  index = normalize(index);
+  goTo(index,false);
+  isSnapping = false;
+  paused = false;
+  scheduleNext(); // ✅ lanjut autoplay lagi
+}, 600);
+
   }
 
   /* ===== DRAG & WHEEL STEP ===== */
@@ -253,9 +297,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // wheel
-  track.addEventListener("wheel", e=>{
-    pauseAndSnap();
-    step(e.deltaY > 0 ? 1 : -1);
-  });
+track.addEventListener("wheel", (e) => {
+  // hanya jalan kalau user benar-benar scroll di area slider
+  e.preventDefault();
+
+  pauseAndSnap();
+  step(e.deltaY > 0 ? 1 : -1);
+}, { passive: false });
+
 
 });

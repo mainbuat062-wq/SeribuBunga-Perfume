@@ -47,28 +47,47 @@
         color: #6c757d;
     }
     /* ===== DASHBOARD MOBILE ICON FIX ===== */
+    
 @media (max-width: 576px) {
 
-    .stat-card {
-        padding: 10px !important;
+    /* bikin isi card lebih rapat tapi tetap nyaman */
+    .stat-card{
+        padding: 12px !important;
     }
 
-    .icon-shape {
-        width: 42px;
-        height: 42px;
-        font-size: 1.2rem;
+    /* kurangi jarak icon ke teks */
+    .stat-card .icon-shape{
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
         border-radius: 12px;
     }
 
-    .stat-card h3 {
-        font-size: 1.4rem;
-        line-height: 1.2;
+    /* override me-3 agar tidak terlalu jauh */
+    .stat-card .icon-shape.me-3{
+        margin-right: 10px !important;
     }
 
-    .stat-card small {
-        font-size: 0.65rem !important;
-        letter-spacing: .4px;
+    /* rapihin teks */
+    .stat-card small{
+        font-size: 0.62rem !important;
+        line-height: 1.1;
+        margin-bottom: 2px !important;
     }
+
+    .stat-card h3{
+        font-size: 1.25rem;
+        line-height: 1.1;
+    }
+}
+/* Biar icon dan teks tidak mepet */
+.stat-card .d-flex.align-items-center{
+    gap: 14px; /* jarak icon dan teks */
+}
+
+/* Optional: hapus efek me-3 agar tidak bentrok */
+.stat-card .icon-shape.me-3{
+    margin-right: 0 !important;
 }
 
 </style>

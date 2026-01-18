@@ -117,17 +117,29 @@ body {
     margin-left: 12px;
 }
 
-.hamburger {
-    display: none;
+.hamburger{
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    display: flex;
     flex-direction: column;
-    gap: 5px;
+    justify-content: center;
+    gap: 6px; /* jarak antar garis */
+    padding: 8px;
 }
 
-.hamburger span {
-    width: 24px;
-    height: 2px;
-    background: var(--text-dark);
+.hamburger span{
+    display: block;
+    width: 26px;
+    height: 3px;
+    background: #111827;
+    border-radius: 6px;
+    transition: 0.25s ease;
 }
+
 
 /* ===========================
    HERO
@@ -1210,5 +1222,15 @@ section {
     
     .related-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+.hamburger{
+    display: none !important;
+}
+
+@media(max-width: 768px){
+    .hamburger{
+        display: flex !important;
     }
 }
